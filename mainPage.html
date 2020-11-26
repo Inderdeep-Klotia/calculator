@@ -1,0 +1,104 @@
+<!--
+
+    Author: Inderdeep Klotia
+    Base HTML File: 
+
+-->
+
+
+<!-- Start of the HTML document -->
+<!DOCTYPE html>
+
+<html lang='en'>
+
+
+
+
+<!-- Header tag that will contain the document's meta data-->
+<head>
+
+
+    <!-- Character set -->
+    <meta charset="utf-8"/>
+
+    <title>Calculator</title>
+
+    <!-- Linking to the style sheet: -->
+    <link rel="stylesheet" href="reset.css">
+
+    <link rel="stylesheet" href="calculatorStyles.css">
+
+
+</head><!-- End of head -->
+
+
+
+
+<!-- Body tag contains the content for the webpage. -->
+<body>
+
+
+    <!-- Title -->
+    <h1>Calculator</h1>
+
+    <!-- Display Section & Back Button: -->
+    <div id="displayContainer">
+
+        
+
+        <div id="displaySection">
+            <div id="userInputValues"></div>
+        
+        </div>
+        <button onclick= 'backspaceDisplay()' class="buttons">&#60;--</button>
+
+    </div>
+
+    <!-- House all the calculator buttons: -->
+    <div id="buttonContainer">
+        <button onclick = 'clearDisplay()'class="buttons">AC</button>
+        <button class="buttons">x<sup>y</sup></button>
+        <button class="buttons">x!</button>
+        <button class="buttons" id="styleEntity">&divide;</button>
+
+
+        <button onclick = 'updateDisplay(9)' class="buttons">9</button>
+        <button onclick = 'updateDisplay(8)' class="buttons">8</button>
+        <button onclick = 'updateDisplay(7)' class="buttons">7</button>
+
+        <button class="buttons">x</button>
+
+        <button onclick = 'updateDisplay(6)' class="buttons">6</button>
+        <button onclick = 'updateDisplay(5)' class="buttons">5</button>
+        <button onclick = 'updateDisplay(4)' class="buttons">4</button>
+
+        <button class="buttons">-</button>
+
+        <button onclick = 'updateDisplay(3)' class="buttons">3</button>
+        <button onclick = 'updateDisplay(2)' class="buttons">2</button>
+        <button onclick = 'updateDisplay(1)' class="buttons">1</button>
+
+        <button class="buttons">+</button>
+        <button onclick = 'makePositiveOrNegative()' class="buttons" id="styleEntity">&plusmn;</button>
+
+        <button class="buttons">0</button>
+
+        <button onclick = 'addDecimal()' class="buttons">.</button>
+        <button class="buttons">=</button>
+        
+    </div>
+
+    <!-- Start of JavaScript -->
+    <script src="calculatorLogic.js"> 
+    </script> <!-- End of Javascript --> 
+
+
+
+
+</body> <!-- End of body -->
+
+
+
+
+
+</html> <!-- End of HTML Document -->

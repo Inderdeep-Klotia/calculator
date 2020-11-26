@@ -1,0 +1,148 @@
+/*
+Author: Inderdeep Klotia
+
+Current Version: V: 1.0
+
+
+V 1.0: Key Edits
+*/
+
+
+
+/*
+    Change the font styles in all browsers.
+    Remove the margin in Firefox and Safari.
+*/
+button,
+input,
+optgroup,
+select,
+textarea {
+  font-family: inherit; /* 1 */
+  font-size: 100%; /* 1 */
+  line-height: 1.15; /* 1 */
+  margin: 0; /* 2 */
+}
+
+
+
+body 
+{
+
+    /*
+        Flexbox allows for easy manipulation of elements. Make the body a flexbox container so child elements 
+        are easily arranged on the screen as desired.
+    */
+    display: flex;
+    
+    /* Standard flex object placement. */
+    flex-direction: column;
+    
+    /* center all elements: */
+    justify-content: center;
+    align-items: center;
+
+    /* Make the body equal to the entirety of the viewport. */
+    min-height: 100vh;
+
+    background-color: rgb(219, 215, 205);
+
+
+    font-family: "Lucida Sans Typewriter", "Lucida Console", Monaco, "Bitstream Vera Sans Mono", monospace;
+}
+
+
+
+/* 
+    Center title & style 
+*/
+h1
+{
+    font-size: 3.5em;
+    padding-bottom: 25px;
+
+}
+
+
+
+/* Will house the display section: */
+#displayContainer
+{
+    height: 120px;
+    width: 500px;
+
+    /* Sets it to display as a CSS Grid (allowing you to use CSS Grid methods) */
+    display: grid; 
+    /* Set column setup for the grid: */
+    grid-template-columns: 2fr 1fr;
+
+
+    
+
+}
+
+
+
+/* Will house the calculator buttons & structure them properly on the page. */
+#buttonContainer
+{
+    /* Sets the height and width of the container element. */
+    height: 500px;
+    width: 500px;
+
+    /* Sets it to display as a CSS Grid (allowing you to use CSS Grid methods) */
+    display: grid;
+
+    /* Using fractions for accurate styling.*/
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr, 1fr, 1fr, 1fr;
+    
+}
+
+
+
+/* Styling calculator buttons */
+.buttons
+{
+
+    font-size: 2.5em;
+    font-weight: 200;
+
+    border: 2px solid black;
+    margin: none !important;
+
+}
+
+
+
+/* Additionl styles to the division operator on the calculator: */
+#styleEntity
+{
+    font-size: 3em;
+}
+
+/* Style the display section: */
+#displaySection
+{
+    display: grid;
+
+    /* center all elements: */
+    justify-content: right;
+    align-items: center;
+
+    padding-right: 35px;
+
+    font-size: 2.5em;
+    border: 2px solid black;
+    
+}
+
+#userInputValues
+{
+    font-size: 0.5em;
+}
+
+
+
+/* superscript font was not properly displaying. */
+sup {font-size:15px; vertical-align:super;}
