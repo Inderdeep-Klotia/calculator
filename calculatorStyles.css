@@ -8,6 +8,17 @@ V 1.0: Key Edits
 */
 
 
+/*
+    root is the outer-most element. Define variables to dyamically edit them with JS.
+*/
+:root 
+{
+    /* Lower font size if overflow is detected: */
+    --displaySectionFontSize: 2.5em;
+}
+
+
+
 
 /*
     Change the font styles in all browsers.
@@ -63,22 +74,29 @@ h1
 
 }
 
+/* Houses previously input values after an operation has been selected: */
+#previouslyInput
+{
+    height: 50px;
+    width: 500px;
+
+    
+}
 
 
 /* Will house the display section: */
 #displayContainer
 {
-    height: 120px;
+    height: 130px;
     width: 500px;
 
     /* Sets it to display as a CSS Grid (allowing you to use CSS Grid methods) */
     display: grid; 
     /* Set column setup for the grid: */
-    grid-template-columns: 2fr 1fr;
+    grid-template-columns: minmax(0, 2fr) 1fr;
 
 
     
-
 }
 
 
@@ -132,7 +150,7 @@ h1
 
     padding-right: 35px;
 
-    font-size: 2.5em;
+    font-size: var(--displaySectionFontSize);
     border: 2px solid black;
     
 }
