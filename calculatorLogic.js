@@ -134,60 +134,6 @@ function exponent(x, y)
 
 
 
-/**
- * Operation Function:
- * 
- * Utilizes a switch statement and calls the apporpriate operation based on the given request
- * 
- * @param {*} operation Used to determine what operation should be utilized
- * @param {*} x         The x value of the operation
- * @param {*} y         The y value of the operation
- */
-function operate(operation, x, y)
-{
-    // switch statements will determine which function to call.
-    switch (operation)
-    {
-        case add:
-            {
-                return add(x, y);
-            }
-        break;
-
-        case subtract:
-            {
-                return subtract(x, y);
-            }
-        break;
-
-        case multiply:
-            {
-                return multiply(x, y);
-            }
-        break;
-
-        case divide:
-            {
-                return divide(x, y);
-            }
-        break;
-
-        case factorial:
-            {
-                return factorial(x);
-            }
-        break;
-
-        case exponent:
-            {
-                return exponent(x, y);
-            }
-        break;
-    } // End of switch statement
-
-} // End of operate function
-
-
 
 /**
  * Onload Function:
@@ -229,6 +175,10 @@ function obtainSectionLength(region)
 }
 
 
+
+
+
+
 /**
  * Update Display Function:
  * 
@@ -239,86 +189,81 @@ function obtainSectionLength(region)
  */
 function updateDisplay(x)
 {
+    // Overflow detector. Will reduce font-size if detected.
+    overflowDetection(x);
 
-    // Adding an overflow detector. Will reduce font-size to display on screen if detected.
-    overflowDetection();
 
-
-    // Regex variable detects an operation
+    /*
+        Regex variable detects an operation
+        tempLength houses the previouslyInput section length
+    */
     let regexrOperationTest = /[-+*/^%!]/g;
-    // Variable houses the previouslyInput section length
     var tempLength = obtainSectionLength(2);
 
-    // If the previous value was a factorial, treat it like a number and let the user input an operation as normal
-    if(document.getElementById("previouslyInput").innerHTML.charAt(tempLength - 1) == '!')
-    {
 
-        // If the input is another factorial give the user an error
-        if (x == '!')
-        {
-            alert("Please enter a non-factorial operation");
-            return 0;
-        }
-        /*
-            Otherwise allow the user to set the displaySection to the value they've requested. If the value is an integer
-            and not an operation, it will be detected in the operationDetection function and stopped.
-        */
-        document.getElementById("displaySection").innerHTML += `${x}`;
-        operationDetection();
-        // End the function. The operation will be appended to the previouslyInput display value in Operation Detection.
+    /*
+        checkForReturn is a variable that houses the return value of factorialDetection
+        If the return value of factorialDetection is 0, also end this function here. 
+    */
+    var checkForReturn = 1;
+    checkForReturn = factorialDetection(x, tempLength);
+ 
+    if (checkForReturn == 0)
+    {
         return 0;
     }
 
 
-
     // If an operation was just inputted, ensure that the user cannot double it up.
-    if (document.getElementById("displaySection").innerHTML.length == 0 && String(x).match(regexrOperationTest))
+    if (obtainSectionLength(1) == 0 && String(x).match(regexrOperationTest))
     {
         return 0;
     }
     
 
 
+    /*
+        checkForReturn is a variable that houses return value of zeroDetection
+        If the return value is 0, will also end function here.
+    */
+    checkForReturn = 1;
+    checkForReturn = zeroDetection(x);
+    if (checkForReturn == 0)
+    {
+        return 0;
+    }
+
 
 
     /*
-        Test to see if there already is a 0 present on the calculator as the first value.
-        If so, don't let the user create anymore.
+        If number of characters exceeds 15, will alert user an error that it exceeds maximum number of values allowed.
+        Otherwise, if the request is legal, it will append the given value to the currently displayed numbers.
     */
-    var tempLength = document.getElementById("displaySection").innerHTML.length;
-    if (document.getElementById("displaySection").innerHTML.charAt(0) == '0' && tempLength == 1)
-    {
-        // Make sure that if a numerical value came through (and the value wasn't a 0) input it & remove 0.
-        var regxrNumbers = /[1-9]/g;
-        if (String(x).match(regxrNumbers))
-        {
-            
-            document.getElementById("displaySection").innerHTML = `${x}`;
-        }
-        return 0;
-        
-    }
-
-    // If the number of characters exceeds 15, tell the user this is the maximum number of values allowed:
     if (document.getElementById("displaySection").innerHTML.length >= 15)
     {
         alert("The calculator cannot take more than 15 values.");
     }
     else
     {
-        // The += will append the given value to the current value.
         document.getElementById("displaySection").innerHTML += `${x}`;
     }
 
-
-        // Detects if an operation input has occured. Will move contents above.
-        operationDetection();
+    /*
+        Detects if an operation input has occured. If an operation has occured, the contents will be moved to the previouslyInput
+        display section.
+    */
+    operationDetection();
 
 }
 
 
 
 // Deletes 1 string value when user clicks backspace:
+/**
+ * Backspace Display Function:
+ * 
+ * Deletes 1 user inputted value when user clicks backspace. Also calls the overflow detection function to resize if needed.
+ */
 function backspaceDisplay()
 {
 
@@ -332,7 +277,12 @@ function backspaceDisplay()
 
 
 
-// Will clear both the display and the previously input values:
+
+/**
+ * Clear All Function:
+ * 
+ * When called, will clear all contents on both displays. 
+ */
 function clearALL()
 {
     document.getElementById("displaySection").innerHTML = ``;
@@ -340,7 +290,12 @@ function clearALL()
 }
 
 
-// Will clear display once called.
+
+/**
+ * Clear Display Function:
+ * 
+ * Clears only the user display when called.
+ */
 function clearDisplay()
 {
     document.getElementById("displaySection").innerHTML = ``;
@@ -348,10 +303,23 @@ function clearDisplay()
 
 
 
-// Will make current displayed value positive or negative.
+/**
+ * Positive or Negative Function:
+ * 
+ * Makes the current display value positive or negative.
+ */
 function makePositiveOrNegative()
 {
-    
+    /*
+        Obtain the display section length    
+        Ensure that the value of zero cannot be turned into a negative value:
+    */
+    tempLength = obtainSectionLength(1);
+    if (document.getElementById("displaySection").innerHTML.charAt(0) == '0' && tempLength == 1)
+    {
+        return 0;
+    }
+
     if (document.getElementById("displaySection").innerHTML.charAt(0) == '-')
     {
         // Create a temp variable. 
@@ -375,6 +343,12 @@ function makePositiveOrNegative()
 
 
 // Add a decimal to the display value:
+/**
+ * Add Decimal Function:
+ * 
+ * Adds a decimal to the current display value.
+ * Will also ensure that only 1 decimal can be displayed on the screen at any given time.
+ */
 function addDecimal()
 {
     let regexrTest = /\./g;
@@ -392,19 +366,24 @@ function addDecimal()
 
 
 
-// Overflow detection. If it exists it will lower the font size until it no longer exists.
+
+/**
+ * Overflow Detection Function:
+ * 
+ * Detects if the current font size and number of values displayed will cause an overflow. If an overflow will be caused
+ *      the function will reduce the font size.
+ */
 function overflowDetection()
 {
-    if (document.getElementById("displaySection").innerHTML.length >= 12)
+    if (document.getElementById("displaySection").innerHTML.length >= 11)
     {
         document.documentElement.style.setProperty('--displaySectionFontSize', '1.8em');
     }
-
     /* 
         If the user backspaces and reduces the number of values being displayed. Set the font size
         back to standard.
     */
-    if (document.getElementById("displaySection").innerHTML.length < 12)
+    else if (document.getElementById("displaySection").innerHTML.length < 11)
     {
         document.documentElement.style.setProperty('--displaySectionFontSize', '2.5em');
     }
@@ -413,37 +392,127 @@ function overflowDetection()
 
 
 
-// Function will check for operation. If found, the entire value is send to the upper text region:
+
+/**
+ * Zero Detection Function:
+ * 
+ * Test to see if there already is a 0 present on the calculator as the first value. If so, don't let the user create anymore.
+ * Also detects if an operation has been input after a 0 input. 
+ * 
+ * @param {*} x variable houses the user input request
+ * @return {0}  Returns 0 if the request is another 0 and 0 is the only value currently displayed.
+ */
+function zeroDetection(x)
+{
+    // Obtain the display section length
+    tempLength = obtainSectionLength(1);
+    // Tests if an operation has been input
+    let regexrOperationTest = /[-+*/^%!]/g;
+
+    if (document.getElementById("displaySection").innerHTML.charAt(0) == '0' && tempLength == 1)
+    {
+        
+        // Make sure that if a numerical value came through (and the value wasn't a 0) input it & remove 0.
+        var regxrNumbers = /[1-9]/g;
+        if (String(x).match(regxrNumbers))
+        {
+            
+            document.getElementById("displaySection").innerHTML = `${x}`;
+        }
+        
+        // If the user input is an operation, it will ensure that the calculator detects the operation successfully and inputs it.
+        if (String(x).match(regexrOperationTest))
+        {
+            document.getElementById("displaySection").innerHTML += `${x}`;
+            operationDetection();
+
+        }
+        
+        // Else if another 0 has been input break the function and do not allow input.
+        return 0;
+    }
+}
+
+
+
+
+
+/**
+ * Factorial Detection Function:
+ * 
+ * The function will only run through its logic if it detects that the user has input a factorial previously.
+ *      Otherwise, the entire function will return nothing and the updateDisplay function will run as normal.
+ * 
+ * @param {*} x             Variable x represents current user input.
+ * @param {*} tempLength    tempLength represents previouslyInput display section character length.
+ * @return {0}              The only value it returns if it returns at all. Will tell the updateDisplay function to stop running
+ *                                  if returned.
+ */
+function factorialDetection(x, tempLength)
+{
+    // If a factorial input has been detected by the user, ensure that it is treated as a normal numerical value.
+    if(document.getElementById("previouslyInput").innerHTML.charAt(tempLength - 1) == '!')
+    {
+
+        // If the input is another factorial give the user an error
+        if (x == '!')
+        {
+            alert("Please enter a non-factorial operation");
+            return 0;
+        }
+
+        /*
+            Otherwise allow the user to set the displaySection to the value they've requested. If the value is an integer
+            and not an operation, it will be detected in the operationDetection function and stopped.
+        */
+        document.getElementById("displaySection").innerHTML += `${x}`;
+        operationDetection();
+        // End the function. The operation will be appended to the previouslyInput display value in Operation Detection.
+        return 0;
+    }
+}
+
+
+
+/**
+ * Operation Detection Function:
+ * 
+ * Function will check if an operation has been input by the user. If an operation input is detected it will go through a series
+ *      of checks to ensure that it is a valid request. If valid, it will take the entire display value and the operation and 
+ *      move it to the previouslyInput section.
+ */
 function operationDetection()
 {
-    // current display section length
-    let inputLength = document.getElementById("displaySection").innerHTML.length;
+    /*
+        currentDisplay section length
+        previouslyInput display section length
+    */
+    let inputLength = obtainSectionLength(1);
+    let previouslyInputLength = obtainSectionLength(2);
+
 
     // let temp house the previously input values.
     let temp = document.getElementById("previouslyInput").innerHTML;
 
-    // previously input section length
-    let previouslyInputLength = document.getElementById("previouslyInput").innerHTML.length;
-
 
     // If the previous value was a factorial, do not let the user successfully enter numerical value
     let regexrNumbers = /[0-9]/g;
-    var tempLength = document.getElementById("displaySection").innerHTML.length;
 
     if (document.getElementById("previouslyInput").innerHTML.charAt(previouslyInputLength - 1) == '!'
             && document.getElementById("displaySection").innerHTML.charAt(0).match(regexrNumbers) )
     {
         alert('Please input an operation after the factorial');
-        let temp = document.getElementById("displaySection").innerHTML.slice(0, tempLength - 1);
+        let temp = document.getElementById("displaySection").innerHTML.slice(0, inputLength - 1);
         document.getElementById("displaySection").innerHTML = temp;
         return 0;
     }
 
 
 
-    // To check if an operation has occured:
+    // variable houses operaton test
     let regexrOperationTest = /[-+*/^%!]/g;
 
+    // If all values are normal, move the current display value and the operation above.
     if(document.getElementById("displaySection").innerHTML.charAt(inputLength - 1).match(regexrOperationTest))
     {
         temp += " " + document.getElementById("displaySection").innerHTML;
@@ -458,33 +527,34 @@ function operationDetection()
 function determineOutput()
 {
 
-    // To check if an operation has occured:
+    // variable houses operaton test
     let regexrOperationTest = /[-+*/^%]/g;
 
-    // Variable to house previouslyInput Length
-    let previouslyInputLength = document.getElementById("previouslyInput").innerHTML.length;
+    // Variables to house lengths
+    let displaySectionLength = obtainSectionLength(1);
+    let previouslyInputLength = obtainSectionLength(2);
 
-    let displaySectionLength = document.getElementById("displaySection").innerHTML.length;
+
 
     /*
-        Potential input errors are dealth with here:
+        Input functions dealt with here:
         -   User should not be able to utilize enter if there are no previously input values
         -   Calculator needs to send the remaining displaySection values to the previouslyInput display section 
                 once enter has been clicked
         -   If the previouslyInput final value is an operation, the user should not be able to click enter and
                 call the operation function. 
-        -   User will get an error alert if they enter a numerical value if the previous value was a factorial.
     */
+   
 
-
-        
-
-    // If there are remaining displaySection values, send it to previouslyInput 
+    /*
+        If there are remaining values send it to the appropriate screen.
+        If the user as not entered a number-operation pair yet, and only a numeric value has been input, do not let the user utilize
+            the enter button.
+    */
     if (displaySectionLength != 0)
     {
         if (previouslyInputLength == 0)
         {
-            // If the user has not entered an operation yet, do not let the user use the enter button.
             return 0;
         }
 
@@ -498,7 +568,7 @@ function determineOutput()
         document.getElementById("previouslyInput").innerHTML = temp;
 
     }
-    // If display is empty and the previously input value houses a operation
+    // If display is empty and the previously input value houses a operation provide the user with an error
     else if (displaySectionLength == 0 && document.getElementById("previouslyInput").innerHTML
                 .charAt(previouslyInputLength - 1)
                 .match(regexrOperationTest))
@@ -511,11 +581,156 @@ function determineOutput()
 
     /*
         Input values into an array and remove additional spacing. 
-        Call call calculation function and send the updated array.
+        Call calculation function and send the updated array.
     */
     let x = document.getElementById("previouslyInput").innerHTML;
-    let operationArray = x.split(" ");
-    console.log(operationArray);
+    let nonFilteredCalculationArr = x.split(" ");
+
+    let filteredCalculationArr = nonFilteredCalculationArr.filter((checkForSpace) =>
+    checkForSpace != "");
+
+    calculation(filteredCalculationArr);
+
 }
 
 
+
+
+function calculation(calculationArr)
+{
+    /*
+        Looping through the entire array and solving utilizing the order of operations:
+    */
+    let regexrFactorialFind = /[!]/g;
+    calculationArr.forEach(function(currentValue, index)
+    {
+        /*
+            Checking for factorials:
+            If there are any operate on them as they are in the array itself.
+        */
+        if (currentValue.match(regexrFactorialFind))
+        {
+            let factorialValue = 0;
+            // Prior to operating remove the !
+            currentValue = currentValue.slice(0, currentValue.length - 1);
+            
+            // Send the value to the factorial operation. Set factorialValue to the factored value.
+            factorialValue = factorial(currentValue);
+
+            /* 
+                Update the current array to house only the factored value.
+                Need to change type back to string for the functions to operate properly.
+            */
+            factorialValue = factorialValue.toString()
+
+            calculationArr[index] = factorialValue;
+
+        }
+
+
+    }) // End of checking for factorials
+
+
+    /*
+        Checking for Exponents. 
+    */
+    let regexrExponentFind = /[\^]/g;
+    calculationArr.forEach(function(currentValue,index)
+    {
+
+        if (currentValue.match(regexrExponentFind))
+        {
+            let exponentValue = 0;
+            // Get the two values to be evaluated:
+            let x = calculationArr[index - 1];
+            let y = calculationArr[index + 1];
+
+            // Determine the final value
+            exponentValue = exponent(x, y);
+
+            /*
+                Remove the operated exponent and replace it with the final value.
+                Remove the two values that have already been utilized in the operation.
+                Change to string.
+            */
+            exponentValue = exponentValue.toString();
+            calculationArr[index] = exponentValue;  
+
+            calculationArr.splice(index - 1, 1);
+            calculationArr.splice(index, 1);
+
+        }
+    
+
+    }) // End of checking for Exponents.
+
+
+
+
+
+    /*
+        Checking for Multiplcation & Division
+    */
+    let regexrDivisionFind = /[\/]/g;
+    let regexrMultiplicationFind = /[*]/g;
+    calculationArr.forEach(function(currentValue, index)
+    {
+        if (currentValue.match(regexrDivisionFind))
+        {
+            let dividedValue = 0;
+
+            // The two values to be evaluated:
+            let x = calculationArr[index - 1];
+            let y = calculationArr[index + 1];
+
+            // Final value
+            dividedValue = divide(x, y);
+
+            /*
+                Remove the division symbol and replace it with the final value.
+                Remove the two values that have already been utilized in the operation.
+                Change to string
+            */
+           dividedValue = dividedValue.toString();
+           calculationArr[index] = dividedValue;  
+
+           calculationArr.splice(index - 1, 1);
+           calculationArr.splice(index, 1);            
+
+        }
+
+        if (currentValue.match(regexrMultiplicationFind))
+        {
+            let multipliedValue = 0;
+            
+            // The two values to be evaluated:
+            let x = calculationArr[index - 1];
+            let y = calculationArr[index + 1];
+
+            // Final value
+            multipliedValue = multiply(x, y);
+
+            /*
+                Remove the multiplication symbol and replace it with the final value.
+                Remove the two values that have already been utilized in the operation.
+                Change to string
+            */
+            multipliedValue = multipliedValue.toString();
+            calculationArr[index] = multipliedValue;  
+
+            calculationArr.splice(index - 1, 1);
+            calculationArr.splice(index, 1);
+
+        }
+
+
+
+    }) // End of checking for Multiplication & Division
+
+    console.log(calculationArr);
+}
+
+function computeArrDivisionMultiplcation(calculationArr)
+{
+
+}
