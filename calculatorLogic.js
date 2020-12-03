@@ -4,15 +4,25 @@
  * 
  * 
  * Current Version: V: 2.0 
- * 
+ *  -   Added calculation logic (Order of operations)
+ *  -   Styled the calulator. Added a Dark mode.
+ *  -   Adding 3 space formatting
  * 
  * V 1.0: Key Edits
  *  -   Added functions that will be responsible for the operations on the calculator [addition, subtraction, division...].
- *  -   Begun adding button functionality for calculator functions such as plusOrMinus, decimal, clearAll, and backspace
+ *  -   Begun adding button functionality for calculator functions: plusOrMinus, decimal, clearAll, and backspace
  */
 
 
- 
+
+// Global iterators. Iterates everytime the user evaluates their expression
+let globalIterator = 0;
+let sessionChecker = 0;
+let toggleMode = 0;
+
+
+
+
 /**
  * Addition Function:
  * 
@@ -22,14 +32,26 @@
  */
  function add(x, y)
  {
+    total = parseFloat(x) + parseFloat(y)
 
-    return x + y;
+
+    if (total > 100000000000 || total < -100000000000)
+    {
+        total = total.toExponential(5);
+        total = total.toString();
+        return total;
+    }
+
+    total = total.toString();
+    return +(Math.round(total + "e+4")  + "e-4");
  }
+
 
 
 
 /**
  * Subtraction Function:
+ * 
  * 
  * @param {*} x x value to be subtracted
  * @param {*} y y value to be subtracted
@@ -37,9 +59,11 @@
  */
  function subtract(x, y)
  {
-     
-    return x - y;
+    total = parseFloat(x) - parseFloat(y)
+    total = total.toString();
+    return +(Math.round(total + "e+4")  + "e-4");
  }
+
 
 
 
@@ -59,9 +83,19 @@
         return 0;
     }
     
+    total = x * y;
 
-    return x * y;
+    if (total > 100000000000 || total < -100000000000)
+    {
+        total = total.toExponential(5);
+        total = total.toString();
+        return total;
+    }
+
+    total = total.toString();
+    return +(Math.round(total + "e+4")  + "e-4");
  }
+
 
 
 
@@ -80,9 +114,12 @@
     {
         return 'inf';
     }
+    let total = x / y;
+    total = total.toString();
 
-    return x / y;
+    return +(Math.round(total + "e+4")  + "e-4");
  }
+
 
 
 
@@ -96,7 +133,7 @@ function factorial(x)
 {
     // let total be equal to the inital value of x.
     let total = x;
-
+    
     // If the factorial is a negative number, make the value of x positive so iteration value is positive.
     if (x < 0)
     {
@@ -113,8 +150,17 @@ function factorial(x)
         i--;
     }
 
-    return total;
+    if (total > 100000000000 || total < -100000000000)
+    {
+        total = total.toExponential(5);
+        total = total.toString();
+        return total;
+    }
+
+    total = total.toString();
+    return +(Math.round(total + "e+4")  + "e-4");
 }
+
 
 
 
@@ -129,7 +175,17 @@ function exponent(x, y)
 {
     // Using built-in JavaScript exponential function:
 
-    return Math.pow(x, y);
+    let total = Math.pow(x, y);
+
+    if (total > 100000000000 || total < -100000000000)
+    {
+        total = total.toExponential(5);
+        total = total.toString();
+        return total;
+    }
+
+    total = total.toString();
+    return +(Math.round(total + "e+4")  + "e-4");
 }
 
 
@@ -144,7 +200,15 @@ function exponent(x, y)
 window.onload = () => {
     document.getElementById("displaySection").innerHTML = ``;
     document.getElementById("previouslyInput").innerHTML = ``;
+
+    // The legend should not be toggled on load:
+    var x = document.getElementById('calculatorLegend');
+    x.style.display='none';
+
+    // Start off in darkmode:
+    toggleDarkLight();
 };
+
 
 
 
@@ -178,7 +242,6 @@ function obtainSectionLength(region)
 
 
 
-
 /**
  * Update Display Function:
  * 
@@ -189,6 +252,16 @@ function obtainSectionLength(region)
  */
 function updateDisplay(x)
 {
+
+    /*
+        New session detection:
+    */
+    if (globalIterator > sessionChecker)
+    {
+        sessionChecker++;
+        clearALL();
+    }
+
     // Overflow detector. Will reduce font-size if detected.
     overflowDetection(x);
 
@@ -239,7 +312,8 @@ function updateDisplay(x)
         If number of characters exceeds 15, will alert user an error that it exceeds maximum number of values allowed.
         Otherwise, if the request is legal, it will append the given value to the currently displayed numbers.
     */
-    if (document.getElementById("displaySection").innerHTML.length >= 15)
+    let regexrNumbers = /[0-9]/g;
+    if (document.getElementById("displaySection").innerHTML.length >= 15 && String(x).match(regexrNumbers))
     {
         alert("The calculator cannot take more than 15 values.");
     }
@@ -252,9 +326,10 @@ function updateDisplay(x)
         Detects if an operation input has occured. If an operation has occured, the contents will be moved to the previouslyInput
         display section.
     */
-    operationDetection();
+   operationDetection();
 
 }
+
 
 
 
@@ -291,6 +366,7 @@ function clearALL()
 
 
 
+
 /**
  * Clear Display Function:
  * 
@@ -300,6 +376,7 @@ function clearDisplay()
 {
     document.getElementById("displaySection").innerHTML = ``;
 }
+
 
 
 
@@ -342,6 +419,7 @@ function makePositiveOrNegative()
 
 
 
+
 // Add a decimal to the display value:
 /**
  * Add Decimal Function:
@@ -367,14 +445,16 @@ function addDecimal()
 
 
 
+
 /**
  * Overflow Detection Function:
  * 
  * Detects if the current font size and number of values displayed will cause an overflow. If an overflow will be caused
  *      the function will reduce the font size.
  */
-function overflowDetection()
+function overflowDetection(x)
 {
+    
     if (document.getElementById("displaySection").innerHTML.length >= 11)
     {
         document.documentElement.style.setProperty('--displaySectionFontSize', '1.8em');
@@ -474,6 +554,7 @@ function factorialDetection(x, tempLength)
 
 
 
+
 /**
  * Operation Detection Function:
  * 
@@ -523,10 +604,23 @@ function operationDetection()
 
 
 
-// Enter function. Determine the value of the user inputs:
+
+/**
+ * Determine Output:
+ * 
+ * The user has clicked enter, determine the output that should be displayed on the caluclator.
+ */
 function determineOutput()
 {
-
+    /*
+        New session detection:
+    */
+   if (globalIterator > sessionChecker)
+   {
+       sessionChecker++;
+       clearALL();
+       return 0;
+   }
     // variable houses operaton test
     let regexrOperationTest = /[-+*/^%]/g;
 
@@ -585,7 +679,7 @@ function determineOutput()
     */
     let x = document.getElementById("previouslyInput").innerHTML;
     let nonFilteredCalculationArr = x.split(" ");
-
+    
     let filteredCalculationArr = nonFilteredCalculationArr.filter((checkForSpace) =>
     checkForSpace != "");
 
@@ -596,11 +690,14 @@ function determineOutput()
 
 
 
-function calculation(calculationArr)
+/**
+ * Computes on the Calculation Array for Factorials:
+ * 
+ * @param {*} calculationArr Takes in the primary calculation array that houses all the values.
+ * @return {calculationArr}  Returns the array once factorial calculations have been completed.
+ */
+function computeOnArrFactorial(calculationArr)
 {
-    /*
-        Looping through the entire array and solving utilizing the order of operations:
-    */
     let regexrFactorialFind = /[!]/g;
     calculationArr.forEach(function(currentValue, index)
     {
@@ -629,17 +726,30 @@ function calculation(calculationArr)
 
 
     }) // End of checking for factorials
+    
+    return calculationArr;
+}
 
 
+
+
+/**
+ * Computes on the Calculation Array for Exponents:
+ * 
+ * @param {*} calculationArr Takes in the primary calculation array that houses all the values.
+ * @return {calculationArr}  Returns the array once exponential calculations have been completed.
+ */
+function computeOnArrExponent(calculationArr)
+{
     /*
         Checking for Exponents. 
     */
-    let regexrExponentFind = /[\^]/g;
-    calculationArr.forEach(function(currentValue,index)
-    {
+   let regexrExponentFind = /[\^]/g;
+   calculationArr.forEach(function(currentValue,index)
+   {
 
-        if (currentValue.match(regexrExponentFind))
-        {
+       if (currentValue.match(regexrExponentFind))
+       {
             let exponentValue = 0;
             // Get the two values to be evaluated:
             let x = calculationArr[index - 1];
@@ -649,9 +759,9 @@ function calculation(calculationArr)
             exponentValue = exponent(x, y);
 
             /*
-                Remove the operated exponent and replace it with the final value.
-                Remove the two values that have already been utilized in the operation.
-                Change to string.
+               Remove the operated exponent and replace it with the final value.
+               Remove the two values that have already been utilized in the operation.
+               Change to string.
             */
             exponentValue = exponentValue.toString();
             calculationArr[index] = exponentValue;  
@@ -659,15 +769,25 @@ function calculation(calculationArr)
             calculationArr.splice(index - 1, 1);
             calculationArr.splice(index, 1);
 
-        }
-    
+            // Call the function again to ensure that all the values are accurately accounted for.
+            computeOnArrExponent(calculationArr);
+       }
+    }) // End of checking for exponents
 
-    }) // End of checking for Exponents.
+    return calculationArr;
+}
 
 
 
 
-
+/**
+ * Computes on the Calculation Array for Division & Multiplication:
+ *  
+ * @param {*} calculationArr Takes in the primary calculation array that houses all the values.
+ * @return {calculationArr}  Returns the array once division and multiplcation calculations have been completed.
+ */
+function computeOnArrDivisionMultiplcation(calculationArr)
+{
     /*
         Checking for Multiplcation & Division
     */
@@ -675,62 +795,375 @@ function calculation(calculationArr)
     let regexrMultiplicationFind = /[*]/g;
     calculationArr.forEach(function(currentValue, index)
     {
-        if (currentValue.match(regexrDivisionFind))
-        {
-            let dividedValue = 0;
+       if (currentValue.match(regexrDivisionFind))
+       {
+           let dividedValue = 0;
 
-            // The two values to be evaluated:
-            let x = calculationArr[index - 1];
-            let y = calculationArr[index + 1];
+           // The two values to be evaluated:
+           let x = calculationArr[index - 1];
+           let y = calculationArr[index + 1];
 
-            // Final value
-            dividedValue = divide(x, y);
+           // Final value
+           dividedValue = divide(x, y);
 
-            /*
-                Remove the division symbol and replace it with the final value.
-                Remove the two values that have already been utilized in the operation.
-                Change to string
-            */
-           dividedValue = dividedValue.toString();
-           calculationArr[index] = dividedValue;  
+           /*
+               Remove the division symbol and replace it with the final value.
+               Remove the two values that have already been utilized in the operation.
+               Change to string
+           */
+          dividedValue = dividedValue.toString();
+          calculationArr[index] = dividedValue;  
+
+          calculationArr.splice(index - 1, 1);
+          calculationArr.splice(index, 1);            
+        
+        // Call the function again to ensure that all the values are accurately accounted for.
+        computeOnArrDivisionMultiplcation(calculationArr);
+       }
+
+       if (currentValue.match(regexrMultiplicationFind))
+       {
+           let multipliedValue = 0;
+           
+           // The two values to be evaluated:
+           let x = calculationArr[index - 1];
+           let y = calculationArr[index + 1];
+
+           // Final value
+           multipliedValue = multiply(x, y);
+
+           /*
+               Remove the multiplication symbol and replace it with the final value.
+               Remove the two values that have already been utilized in the operation.
+               Change to string
+           */
+           multipliedValue = multipliedValue.toString();
+           calculationArr[index] = multipliedValue;  
 
            calculationArr.splice(index - 1, 1);
-           calculationArr.splice(index, 1);            
-
-        }
-
-        if (currentValue.match(regexrMultiplicationFind))
-        {
-            let multipliedValue = 0;
+           calculationArr.splice(index, 1);
             
-            // The two values to be evaluated:
-            let x = calculationArr[index - 1];
-            let y = calculationArr[index + 1];
+           
+           // Call the function again to ensure that all the values are accurately accounted for.
+           computeOnArrDivisionMultiplcation(calculationArr);
 
-            // Final value
-            multipliedValue = multiply(x, y);
-
-            /*
-                Remove the multiplication symbol and replace it with the final value.
-                Remove the two values that have already been utilized in the operation.
-                Change to string
-            */
-            multipliedValue = multipliedValue.toString();
-            calculationArr[index] = multipliedValue;  
-
-            calculationArr.splice(index - 1, 1);
-            calculationArr.splice(index, 1);
-
-        }
-
-
+         }
 
     }) // End of checking for Multiplication & Division
 
-    console.log(calculationArr);
+   return calculationArr;
 }
 
-function computeArrDivisionMultiplcation(calculationArr)
+
+
+
+/**
+ * Computes on the Calculation Array for Addition & Subtraction:
+ * 
+ * @param {*} calculationArr Takes in the primary calculation array that houses all the values.
+ * @return {calculationArr}  Returns the array once division and multiplcation calculations have been completed.
+ */
+function computeOnArrAdditionSubtraction(calculationArr)
 {
+    /*
+        Checking for Addition & Subtraction
+    */
+   let regexrAdditionFind = /^\+{1}$/g;
+   let regexrSubtractionFind = /^-{1}$/g;
+
+   calculationArr.forEach(function(currentValue, index)
+   {
+      if (currentValue.match(regexrAdditionFind))
+      {
+          let summedValue = 0;
+
+          // The two values to be evaluated:
+          let x = calculationArr[index - 1];
+          let y = calculationArr[index + 1];
+
+          // Final value
+          summedValue = add(x, y);
+
+          /*
+              Remove the addition symbol and replace it with the final value.
+              Remove the two values that have already been utilized in the operation.
+              Change to string
+          */
+         summedValue = summedValue.toString();
+         calculationArr[index] = summedValue;  
+
+         calculationArr.splice(index - 1, 1);
+         calculationArr.splice(index, 1);            
+       
+       // Call the function again to ensure that all the values are accurately accounted for.
+       computeOnArrAdditionSubtraction(calculationArr);
+      }
+
+      if (currentValue.match(regexrSubtractionFind))
+      {
+          let subtractedValue = 0;
+
+          // The two values to be evaluated:
+          let x = calculationArr[index - 1];
+          let y = calculationArr[index + 1];
+
+          // Final value
+          subtractedValue = subtract(x, y);
+
+          /*
+              Remove the addition symbol and replace it with the final value.
+              Remove the two values that have already been utilized in the operation.
+              Change to string
+          */
+         subtractedValue = subtractedValue.toString();
+         calculationArr[index] = subtractedValue;  
+
+         calculationArr.splice(index - 1, 1);
+         calculationArr.splice(index, 1);            
+       
+       // Call the function again to ensure that all the values are accurately accounted for.
+       computeOnArrAdditionSubtraction(calculationArr);
+      }
+
+    }) // End of checking for addition or subtraction
+
+    return calculationArr;
+}
+
+
+
+/**
+ * Calculation Function:
+ * 
+ * Goes through the array in the order of operations. Calls the appropriate function based on what operation should be
+ *      evaluated at the given moment.
+ * Displays the final value on the screen once all calculations have been completed.
+ * 
+ * @param {*} calculationArr Takes in the current calculationArray that houses all of the values and operations.
+ */
+function calculation(calculationArr)
+{
+
+    /*
+        Looping through the entire array and solving utilizing the order of operations:
+    */
+
+    // Compute on the array for factorials. Update the array (return value)
+    calculationArr = computeOnArrFactorial(calculationArr);
+
+    // Compute on the array for exponents. Update the array 
+    calculationArr = computeOnArrExponent(calculationArr);
+
+
+    // Compute on the array for division and multiplcation. Update the array 
+    calculationArr = computeOnArrDivisionMultiplcation(calculationArr);
+
+
+    // Compute on the array for addition and subtraction. Update the array
+    calculationArr = computeOnArrAdditionSubtraction(calculationArr);
+
+
+
+    /*
+        Adds comma formatting for easy reading
+        Display the final value on the display
+    */
+    let regexrCommaInputDecimal = /(\d)(?=(\d{3})+(?!\d)+\.)/g;
+    let regexrCommaInput = /(\d)(?=(\d{3})+(?!\d))/g;
+    if (calculationArr[0].match(/[e]/g)== null)
+    {
+        if(calculationArr[0].match(/[.]/g))
+        {
+            calculationArr[0] = calculationArr[0].replace(regexrCommaInputDecimal, "$1,");
+        }
+        else
+        {
+            calculationArr[0] = calculationArr[0].replace(regexrCommaInput, "$1,");
+        }
+        
+    }
+    document.getElementById("displaySection").innerHTML = calculationArr[0];
+    globalIterator++;
+
+    // Overflow detector. Will reduce font-size if detected.
+    overflowDetection();
+
+    
+}
+
+
+
+
+/**
+ * Keyboard Press Event Listener:
+ * 
+ * If a press has been detected it will call the keyPressInput function.
+ */
+window.addEventListener('keydown', keyPressInput);
+
+
+
+
+/**
+ * Key Press Input Function:
+ * 
+ * It will determine whether a valid keyboard input request has been detected. If so, It will click the appropriate button.
+ * 
+ * @param {*} event 
+ */
+function keyPressInput(event)
+{
+    /*
+        Using if else statements to ensure that inputs such as shift and * as an example do not multi input.
+        event.key utilization for operations is more appropriate than event.code. as event.code only determines a single input.
+    */
+    let x = event.code;
+    if ((event.shiftKey && event.key === '*') || x == 'NumpadMultiply')
+    {
+        document.getElementById('*').click();
+    }
+    else if (event.key === '=' || x == 'NumpadEnter' || x == 'Enter')
+    {
+        document.getElementById('=').click()
+    }
+    else if((event.shiftKey && event.key === '+') || x == 'NumpadAdd')
+    {
+        document.getElementById('+').click();
+    }
+    else if (event.key === '-' || x == 'NumpadSubtract')
+    {
+        document.getElementById('-').click();
+    }
+    else if (x == 'NumpadDivide' || x == 'Slash')
+    {
+        document.getElementById('/').click();
+    }
+    else if (event.shiftKey && event.key === '!')
+    {
+        document.getElementById('!').click();
+    }
+    else if (event.shiftKey && event.key == '^')
+    {
+        document.getElementById('^').click();
+    }
+    else if (x == 'Backspace')
+    {
+        document.getElementById('backspace').click();
+    }
+    else if(x == 'Escape')
+    {
+        document.getElementById('AC').click();
+    }
+    else if (x == 'NumpadDecimal' || x == 'Period')
+    {
+        document.getElementById('.').click();
+
+    }
+
+
+    else if (x == 'Digit0' || x == 'Numpad0')
+    {
+        document.getElementById('0').click();
+    }
+
+    else if (x == 'Digit1' || x == 'Numpad1')
+    {
+        document.getElementById('1').click();
+    }
+    
+    else if (x == 'Numpad2' || x == 'Digit2')
+    {
+        document.getElementById('2').click();
+    }
+
+    else if (x == 'Numpad3' || x == 'Digit3')
+    {
+        document.getElementById('3').click();
+    }
+
+    else if (x == 'Numpad4' || x == 'Digit4')
+    {
+        document.getElementById('4').click();
+    }
+
+    else if (x == 'Numpad5' || x == 'Digit5')
+    {
+        document.getElementById('5').click();
+    }
+
+    else if (x == 'Numpad6' || x == 'Digit6')
+    {
+        document.getElementById('6').click();
+    }
+
+    else if (x == 'Numpad7' || x == 'Digit7')
+    {
+        document.getElementById('7').click();
+    }
+
+    else if (x == 'Numpad8' || x == 'Digit8')
+    {
+        document.getElementById('8').click();
+    }
+
+    else if (x == 'Numpad9' || x == 'Digit9')
+    {
+        document.getElementById('9').click();
+
+    }    
+
+
+}
+
+
+
+
+/**
+ * Toggle Table Function:
+ * 
+ * Checks if the Legend has been toggled. If it hasn't it will toggle the table. The next click will close it.
+ */
+function toggleTable()
+{
+  var x = document.getElementById('calculatorLegend');
+  if (x.style.display == "none")
+  {
+      x.style.display = 'block';
+      document.getElementById('toggleLegendButton').innerHTML = '&#60;--';
+  }
+  else
+  {
+      x.style.display='none';
+      document.getElementById('toggleLegendButton').innerHTML = 'Legend';
+  }
+}
+
+
+
+
+/**
+ * Toggle Light or Dark Mode Function:
+ * 
+ * Toggles light mode or dark mode based on an interator. If the iterator is even, dark mode is activated.
+ *      If the iterator is odd, light mode is activated.
+ */
+function toggleDarkLight()
+{
+    
+    if (toggleMode % 2 == 0)
+    {
+        document.body.style.backgroundColor = "rgb(34, 34, 34)";
+        document.getElementById('title').style.color = "rgb(228, 150, 24)";
+        document.getElementById('toggleDarkLight').innerHTML = "Light Mode";
+    }
+    else
+    {
+        document.body.style.backgroundColor = "rgb(250, 250, 250)";
+        document.getElementById('title').style.color = "black";
+        document.getElementById('toggleDarkLight').innerHTML = "Dark Mode";
+
+    }
+    
+    toggleMode++;
 
 }

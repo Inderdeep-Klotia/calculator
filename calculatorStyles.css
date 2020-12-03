@@ -55,11 +55,14 @@ body
 
     /* Make the body equal to the entirety of the viewport. */
     min-height: 100vh;
-
-    background-color: rgb(219, 215, 205);
+    background-color: rgb(250, 250, 250);
+    
+    
+    
 
 
     font-family: "Lucida Sans Typewriter", "Lucida Console", Monaco, "Bitstream Vera Sans Mono", monospace;
+    font-family: roboto;
 }
 
 
@@ -71,6 +74,8 @@ h1
 {
     font-size: 3.5em;
     padding-bottom: 25px;
+    color: rgb(0, 0, 0);
+
 
 }
 
@@ -79,8 +84,8 @@ h1
 {
     height: 50px;
     width: 500px;
-
-    
+    color: rgb(1, 182, 248);
+    font-size: 1.15em;
 }
 
 
@@ -95,6 +100,7 @@ h1
     /* Set column setup for the grid: */
     grid-template-columns: minmax(0, 2fr) 1fr;
 
+    color: rgb(1, 193, 248);
 
     
 }
@@ -124,20 +130,93 @@ h1
 {
 
     font-size: 2.5em;
-    font-weight: 200;
 
-    border: 2px solid black;
+    border: 1px solid black;
     margin: none !important;
 
 }
 
-
-
-/* Additionl styles to the division operator on the calculator: */
-#styleEntity
+.buttons:hover
 {
-    font-size: 3em;
+    border: 0 solid;
+    box-shadow: inset 0 0 8px;
+    
+    cursor: pointer;
+
 }
+
+
+
+/* Styling Toggle Legend & Darkmode/Light section: */
+#toggleDiv
+{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding-top: 20px;
+    width: 500px;
+    
+}
+
+.toggleButton
+{
+    font-size: 1.1em;
+    border: 1px solid black;
+    margin: none !important;
+    background-color: rgb(34, 34, 34);
+    color: rgb(228, 150, 24);
+    padding: 13px;
+
+}
+.toggleButton:hover
+{
+    border: 0 solid;
+    box-shadow: inset 0 0 8px;
+    
+    cursor: pointer;
+
+}
+
+
+
+/* 
+    Styling the table. All styles related to the table are situated here: 
+*/
+
+/* Make the Div position abosolute, have it be on top of all other styles on the page. */
+#calculatorLegendDiv
+{
+    position: absolute;
+}
+
+
+/* Standard table font-size: Non header elements */
+table 
+{
+    font-size: 19px;
+    
+}
+
+
+
+/* Styles for the table data */
+td
+{
+    padding: 15px 20px 15px 15px;
+    color: rgb(222, 215, 215);
+    background-color: rgb(34, 34, 34);
+    border: 1px solid black;
+}
+/* Styles for the table header */
+th
+{
+    text-align: center;
+    font-size: 24px;
+    padding: 21px;
+    color: rgb(228, 150, 24);
+    background-color: rgb(26, 26, 26);
+}
+
+
 
 /* Style the display section: */
 #displaySection
@@ -151,16 +230,63 @@ h1
     padding-right: 35px;
 
     font-size: var(--displaySectionFontSize);
-    border: 2px solid black;
-    
-}
-
-#userInputValues
-{
-    font-size: 0.5em;
+    border: 1px solid black;
+ 
+    background-color: rbg(18, 18, 18);
 }
 
 
 
 /* superscript font was not properly displaying. */
 sup {font-size:15px; vertical-align:super;}
+
+/*
+    Styling the right side of the calculator:
+*/
+.rightSideStyle 
+{
+    background-color: rgb(26, 26, 26);
+    color: rgb(1, 193, 248);
+}
+
+/*
+    Override styles for the display section from body:
+*/
+.styleDisplaySection
+{
+    background-color: rgb(18, 18, 18);
+}
+
+/*
+    Styling the main section of the calculator:
+*/
+.styleNumberSection
+{
+    background-color: rgb(34, 34, 34);
+    color: rgb(222, 215, 215);
+}
+
+/*
+    Styling teh upper section of the calculator:
+*/
+.styleUpperSection
+{
+    background-color: rgb(34, 34, 34);
+    color: rgb(228, 150, 24);
+}
+
+/*
+    Styling AC
+*/
+.styleAC
+{
+    background-color: rgb(34, 34, 34);
+    color: rgb(205, 19, 19);
+
+}
+
+/* Remove focusing highlight */
+*:focus 
+{
+    outline:0;
+}

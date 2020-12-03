@@ -28,7 +28,8 @@
 
     <link rel="stylesheet" href="calculatorStyles.css">
 
-
+    <link rel="preconnect" href="https://fonts.gstatic.com"> 
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
 </head><!-- End of head -->
 
 
@@ -39,54 +40,138 @@
 
 
     <!-- Title -->
-    <h1>Calculator</h1>
+    <h1 id="title">Calculator</h1>
 
+    
     <!-- Previously input container -->
     <div id = "previouslyInput">
         
     </div>
 
+    
+        <!-- Houses the table, hidden on load displays over the calculator: -->
+        <div id="calculatorLegendDiv">
+            <table id='calculatorLegend' class="striped">
+    
+                <thead>
+                  <tr>
+                    <th>Calculator Key:</th>
+                    <th>Keyboard Shortcut:</th>
+                  </tr>
+                </thead>
+          
+                <tbody>
+          
+                  <tr>
+                    <td>Backspace</td>
+                    <td>Backspace OR delete (for mac)</td>
+                  </tr>
+                  <tr>
+                    <td>AC</td>
+                    <td>Escape</td>
+                  </tr>
+          
+                  <tr>
+                    <td>x<sup>y</sup></td>
+                    <td>^</td>
+                  </tr>
+          
+                  <tr>
+                    <td>x!</td>
+                    <td>!</td>
+                  </tr>
+          
+                  <tr>
+                    <td>&divide;</td>
+                    <td>Numpad / OR /</td>
+                  </tr>
+          
+                  <tr>
+                    <td>x</td>
+                    <td>Numpad * OR *</td>
+                  </tr>
+          
+                  <tr>
+                    <td>-</td>
+                    <td>Numpad - OR -</td>
+                  </tr>
+          
+                  <tr>
+                    <td>+</td>
+                    <td>Numpad + OR +</td>
+                  </tr>
+          
+                  <tr>
+                    <td>=</td>
+                    <td>Numpad Enter OR Enter</td>
+                  </tr>
+          
+                  <tr>
+                    <td>Digits</td>
+                    <td>Any corresponding keyboard digit</td>
+                  </tr>
+          
+                </tbody>
+          
+              </table> <!-- End of table -->
+    
+        </div> <!-- End of table div -->
+    
+
+
+
     <!-- Display Section & Back Button: -->
     <div id="displayContainer">
 
-        <div id="displaySection"></div>
-        <button onclick= 'backspaceDisplay()' class="buttons">&#60;--</button>
+        <div id="displaySection" class="styleDisplaySection"></div>
+        <button id='backspace' onclick= 'backspaceDisplay()' class="buttons rightSideStyle">&#60;--</button>
 
     </div>
+
+
 
     <!-- House all the calculator buttons: -->
     <div id="buttonContainer">
-        <button onclick = 'clearALL()'class="buttons">AC</button>
-        <button onclick = 'updateDisplay(" ^")' class="buttons">x<sup>y</sup></button>
-        <button onclick = 'updateDisplay("!")' class="buttons">x!</button>
-        <button onclick = 'updateDisplay(" /")'class="buttons" id="styleEntity">&divide;</button>
+        <button id='AC' onclick = 'clearALL()'          class="buttons styleAC">AC</button>
+        <button id='^'  onclick = 'updateDisplay(" ^")' class="buttons styleUpperSection">x<sup>y</sup></button>
+        <button id='!'  onclick = 'updateDisplay("!")'  class="buttons styleUpperSection">x!</button>
+        <button id='/'  onclick = 'updateDisplay(" /")' class="buttons rightSideStyle">&divide;</button>
 
 
-        <button onclick = 'updateDisplay(9)' class="buttons">9</button>
-        <button onclick = 'updateDisplay(8)' class="buttons">8</button>
-        <button onclick = 'updateDisplay(7)' class="buttons">7</button>
+        <button id='9'  onclick = 'updateDisplay(9)'    class="buttons styleNumberSection">9</button>
+        <button id='8'  onclick = 'updateDisplay(8)'    class="buttons styleNumberSection">8</button>
+        <button id='7'  onclick = 'updateDisplay(7)'    class="buttons styleNumberSection">7</button>
 
-        <button onclick = 'updateDisplay(" *")' class="buttons">x</button>
+        <button id='*'  onclick = 'updateDisplay(" *")' class="buttons rightSideStyle">x</button>
 
-        <button onclick = 'updateDisplay(6)' class="buttons">6</button>
-        <button onclick = 'updateDisplay(5)' class="buttons">5</button>
-        <button onclick = 'updateDisplay(4)' class="buttons">4</button>
+        <button id='6'  onclick = 'updateDisplay(6)'    class="buttons styleNumberSection">6</button>
+        <button id='5'  onclick = 'updateDisplay(5)'    class="buttons styleNumberSection">5</button>
+        <button id='4'  onclick = 'updateDisplay(4)'    class="buttons styleNumberSection">4</button>
 
-        <button onclick = 'updateDisplay(" -")' class="buttons">-</button>
+        <button id='-'  onclick = 'updateDisplay(" -")' class="buttons rightSideStyle">-</button>
 
-        <button onclick = 'updateDisplay(3)' class="buttons">3</button>
-        <button onclick = 'updateDisplay(2)' class="buttons">2</button>
-        <button onclick = 'updateDisplay(1)' class="buttons">1</button>
+        <button id='3'  onclick = 'updateDisplay(3)'    class="buttons styleNumberSection">3</button>
+        <button id='2'  onclick = 'updateDisplay(2)'    class="buttons styleNumberSection">2</button>
+        <button id='1'  onclick = 'updateDisplay(1)'    class="buttons styleNumberSection">1</button>
 
-        <button onclick = 'updateDisplay(" +")' class="buttons">+</button>
-        <button onclick = 'makePositiveOrNegative()' class="buttons" id="styleEntity">&plusmn;</button>
+        <button id='+'  onclick = 'updateDisplay(" +")'  class="buttons rightSideStyle">+</button>
+        <button id='~'  onclick = 'makePositiveOrNegative()'     class="buttons styleNumberSection" >&plusmn;</button>
 
-        <button onclick = 'updateDisplay(0)'class="buttons">0</button>
+        <button id='0'  onclick = 'updateDisplay(0)'     class="buttons styleNumberSection">0</button>
 
-        <button onclick = 'addDecimal()' class="buttons">.</button>
-        <button onclick = 'determineOutput()' class="buttons">=</button>
+        <button id='.'  onclick = 'addDecimal()'         class="buttons styleNumberSection">.</button>
+        <button id='='  onclick = 'determineOutput()'    class="buttons rightSideStyle">=</button>
         
+    </div> <!-- End of button div -->
+
+
+    <!-- Div that houses the toggle functions for the calculator. Toggles a table and dark/light mode -->
+    <div id="toggleDiv">
+        <button class="toggleButton" id="toggleLegendButton" onclick='toggleTable()'>Legend</button>
+        <button class="toggleButton" id="toggleDarkLight" onclick='toggleDarkLight()'>Dark Mode</button>
     </div>
+
+
 
     <!-- Start of JavaScript -->
     <script src="calculatorLogic.js"> 
