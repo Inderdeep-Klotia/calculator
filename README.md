@@ -3,7 +3,7 @@ Webpage Calculator:
 ------------------------------------------------------------
 Calculator made utilizing JavaScript, CSS, and HTML
 
-<img width="600" alt="GameScreenshot" src="https://github.com/Inderdeep-Klotia/calculator/blob/543049224ec121138e87b7ef7ce1c94a0693d4f6/CalculatorImage.png">
+<img width="450" alt="GameScreenshot" src="https://github.com/Inderdeep-Klotia/calculator/blob/543049224ec121138e87b7ef7ce1c94a0693d4f6/CalculatorImage.png">
 
 
 [Key Functionality]
@@ -20,7 +20,7 @@ Calculator made utilizing JavaScript, CSS, and HTML
 Replit Link: 
 
 
-Replit Link: 
+
 [Full List of Functionality]
 ------------------------------------------------------------
 -   Keyboard inputs allowed
