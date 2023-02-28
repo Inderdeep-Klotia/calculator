@@ -3,23 +3,21 @@ Webpage Calculator:
 ------------------------------------------------------------
 Calculator made utilizing JavaScript, CSS, and HTML
 
+<img width="600" alt="GameScreenshot" src="https://github.com/Inderdeep-Klotia/calculator/blob/543049224ec121138e87b7ef7ce1c94a0693d4f6/CalculatorImage.png">
+
+
 [Key Functionality]
 ------------------------------------------------------------
--       Light & Dark Mode
--       Keyboard/numpad input enabled
--       multiple operations on a single line with apporpriate order of operations
--       Operations: Exponential, factoiral, addition, subtraction, multiplication, division
--       Legend included
+- Light & Dark Mode
+- Keyboard/numpad input enabled
+- multiple operations on a single line with apporpriate order of operations
+- Operations: Exponential, factoiral, addition, subtraction, multiplication, division
+- Legend included
 
 
 [How to Run]
 ------------------------------------------------------------
 Replit Link: 
-
-
-[Calculator Screenshot]
-------------------------------------------------------------
-<img width="919" alt="GameScreenshot" src="https://github.com/Inderdeep-Klotia/calculator/blob/543049224ec121138e87b7ef7ce1c94a0693d4f6/CalculatorImage.png">
 
 
 Replit Link: 
