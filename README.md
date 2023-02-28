@@ -8,7 +8,7 @@ Calculator made utilizing JavaScript, CSS, and HTML
 -       Light & Dark Mode
 -       Keyboard/numpad input enabled
 -       multiple operations on a single line with apporpriate order of operations
--       Operations available: Exponents, factoiral, addition, subtraction, multiplication, division
+-       Operations: Exponential, factoiral, addition, subtraction, multiplication, division
 -       Legend included
 
 
@@ -19,7 +19,7 @@ Replit Link:
 
 [Calculator Screenshot]
 ------------------------------------------------------------
-<img width="919" alt="GameScreenshot" src="https://user-images.githubusercontent.com/68567294/122655937-6fd21980-d124-11eb-83a1-e8f0c212da94.png">
+<img width="919" alt="GameScreenshot" src="https://github.com/Inderdeep-Klotia/calculator/blob/543049224ec121138e87b7ef7ce1c94a0693d4f6/CalculatorImage.png">
 
 
 Replit Link: 
