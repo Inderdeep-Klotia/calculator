@@ -1,5 +1,5 @@
 
-Webpage Calculator:
+Webpage Calculator
 ------------------------------------------------------------
 Calculator made utilizing JavaScript, CSS, and HTML
 
