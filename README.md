@@ -1,9 +1,29 @@
 
 Webpage Calculator:
 ------------------------------------------------------------
+Calculator made utilizing JavaScript, CSS, and HTML
+
+[Key Functionality]
+------------------------------------------------------------
+-       Light & Dark Mode
+-       Keyboard/numpad input enabled
+-       multiple operations on a single line with apporpriate order of operations
+-       Operations available: Exponents, factoiral, addition, subtraction, multiplication, division
+-       Legend included
 
 
-[Full List of Functionality:]
+[How to Run]
+------------------------------------------------------------
+Replit Link: 
+
+
+[Calculator Screenshot]
+------------------------------------------------------------
+<img width="919" alt="GameScreenshot" src="https://user-images.githubusercontent.com/68567294/122655937-6fd21980-d124-11eb-83a1-e8f0c212da94.png">
+
+
+Replit Link: 
+[Full List of Functionality]
 ------------------------------------------------------------
 -   Keyboard inputs allowed
 -   Ensures only 1 decimal could be input
