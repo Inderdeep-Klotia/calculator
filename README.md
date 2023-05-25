@@ -17,7 +17,7 @@ Calculator made utilizing JavaScript, CSS, and HTML
 
 [How to Run]
 ------------------------------------------------------------
-Replit Link: https://replit.com/@Inderdeep-Klotia/calculator
+Replit Link: https://calculator--inderdeep-klotia.repl.co
 
 
 
